@@ -17,9 +17,9 @@
 
 ### To - Do
 
-Add functional for Weather forcast. (Maybe using world weather maps)
-Run on a server. (Django or others)
-Add some machine learnig. (fancy stuff :D )
+* Add functional for Weather forcast. (Maybe using world weather maps)
+* Run on a server. (Django or others)
+* Add some machine learnig. (fancy stuff :D )
 
 
 
