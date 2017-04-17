@@ -2,6 +2,7 @@ import os
 import time
 from slackclient import SlackClient
 from random import randint
+from chatterbot import ChatBot
 
 # starterbot's ID as an environment variable
 BOT_ID = os.environ.get("BOT_ID")
@@ -12,6 +13,24 @@ EXAMPLE_COMMAND = "jarvis_ask"
 
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+
+
+chatbot = ChatBot(
+                  'Bot Botovich',
+                  storage_adapter="chatterbot.storage.JsonFileStorageAdapter",
+                  logic_adapters=[
+                                  "chatterbot.logic.MathematicalEvaluation",
+                                  "chatterbot.logic.TimeLogicAdapter",
+                                  "chatterbot.logic.BestMatch"
+                                  ],
+                  trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
+                  filters=["chatterbot.filters.RepetitiveResponseFilter"],
+                  database="../database.db"
+
+                  )
+
+# Train based on the english corpus
+chatbot.train("chatterbot.corpus.english")
 
 
 def randomBasketball():
@@ -61,11 +80,13 @@ def handle_command(command, channel):
             randomBasketball()
         else:
             response = "Master i know not what you speak of!"
+            # Get a response to an input statement
             slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
     else:
-        response = "Not sure what you mean. Use the *" + EXAMPLE_COMMAND + \
+        #response = "Not sure what you mean. Use the *" + EXAMPLE_COMMAND + \
         "* command with numbers or words, delimited by spaces or _."
+        response =str(chatbot.get_response(command))
         slack_client.api_call("chat.postMessage", channel=channel,
                       text=response, as_user=True)
 
