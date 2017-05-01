@@ -2,7 +2,7 @@ import os
 from slackclient import SlackClient
 
 
-BOT_NAME = 'homeworkbot'
+BOT_NAME = 'nosferatu'
 
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
